@@ -9,7 +9,7 @@ taste_enhancer = ['2 TSP (10 ml) olive oil','2 TBSP (30g) reduced-calorie salad 
 				  'Small handful of nuts','1/2 ounce  grated Parmesan cheese','1 TBSP (20g) jam, jelly, honey, syrup, sugar']
 
 
-def calc_tdee(name,weight,height,age,gender,phys_act):
+def calc_tdee(email,weight,height,age,gender,phys_act):
 	if gender=='Female':
 		bmr = 655 + (9.6 * weight) + (1.8 * height ) - (4.7 * age)
 	else:
