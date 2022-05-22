@@ -4,7 +4,7 @@
 from random import randint
 from forms import UserInfoForm
 from flask import Flask, render_template, request, url_for, redirect
-from algo_custom import Weight_Loss
+from algo_custom import Weight_Loss, Weight_Gain
 
 
 protein = ['Yogurt(1 cup)', 'Cooked meat(85g)', 'Cooked fish(100g)', '1 whole egg + 4 egg whites', 'Tofu(125g)']
@@ -147,6 +147,8 @@ def result():
     phys_act = request.args.get('phys_act')
 
     weight_loss_diet = Weight_Loss(weight, height, age, 1)
+    weight_gain_diet = Weight_Gain(weight, height, age, 1)
+
     tdee = calc_tdee(name, weight, height, age, gender, phys_act)
     if tdee is None:
         return render_template('error.html', title="Error Page")
@@ -159,10 +161,10 @@ def result():
     dinner = dcalc(tdee)
     snack3 = s3calc(tdee)
     return render_template('result.html', title="Result", breakfast=breakfast, snack1=snack1, lunch=lunch,
-                           snack2=snack2, dinner=dinner, snack3=snack3, weight_loss_diet=weight_loss_diet)
+                           snack2=snack2, dinner=dinner, snack3=snack3, weight_loss_diet=weight_loss_diet,
+                           weight_gain_diet=weight_gain_diet)
 
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
 
-# In[ ]:

@@ -1,22 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.ensemble import RandomForestClassifier
 
-# In[11]:
-
 
 data = pd.read_csv('food.csv')
 # data.tail()
-
-
-# In[3]:
 
 
 Breakfastdata = data['Breakfast']
@@ -30,8 +23,6 @@ DinnerdataNumpy = Dinnerdata.to_numpy()
 
 Food_itemsdata = data['Food_items']
 
-# In[4]:
-
 
 a = ""
 w = ""
@@ -41,9 +32,6 @@ h = ""
 
 def show_entry_fields():
     print("\n Age: %s\n Veg-NonVeg: %s\n Weight: %s kg\n Height: %s cm\n" % (a, v, w, h))
-
-
-# In[5]:
 
 
 def Weight_Loss(clbmi, agecl):
@@ -264,8 +252,6 @@ def Weight_Loss(clbmi, agecl):
 
     return diet_list_weightloss
 
-
-# In[6]:
 
 
 def Weight_Gain(clbmi, agecl):
