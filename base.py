@@ -4,19 +4,22 @@
 from random import randint
 from forms import UserInfoForm
 from flask import Flask, render_template, request, url_for, redirect
-import algo
+from algo_custom import Weight_Loss
 
 
 protein = ['Yogurt(1 cup)', 'Cooked meat(85g)', 'Cooked fish(100g)', '1 whole egg + 4 egg whites', 'Tofu(125g)']
 fruit = ['Berries(80g)', 'Apple', 'Orange', 'Banana', 'Dried Fruit(Handfull)', 'Fruit Juice(125ml)']
 vegetable = ['Any vegetable(80g)', 'Leafy greens(Any Amount)']
-grains = ['Cooked Grain(150g)', 'Whole Grain Bread(1 slice)', 'Half Large Potato(75g)', 'Oats(250g)', '2 corn tortillas']
+grains = ['Cooked Grain(150g)', 'Whole Grain Bread(1 slice)', 'Half Large Potato(75g)', 'Oats(250g)',
+          '2 corn tortillas']
 protein_snack = ['Soy nuts(30g)', 'Low fat milk(250ml)', 'Hummus(4 Tbsp)', 'Cottage cheese (125g)',
                  'Flavored yogurt(125g)']
 taste_enhancer = ['2 TSP (10 ml) olive oil', '2 TBSP (30g) reduced-calorie salad dressin', '1/4 medium avocado',
-                  'Small handful of nuts', '1/2 ounce  grated Parmesan cheese', '1 TBSP (20g) jam, jelly, honey, syrup, sugar']
+                  'Small handful of nuts', '1/2 ounce  grated Parmesan cheese',
+                  '1 TBSP (20g) jam, jelly, honey, syrup, sugar']
 
 
+# calculates total daily energy expenditure
 def calc_tdee(name, weight, height, age, gender, phys_act):
     if gender == 'Female':
         bmr = 655 + (9.6 * weight) + (1.8 * height) - (4.7 * age)
@@ -36,6 +39,7 @@ def calc_tdee(name, weight, height, age, gender, phys_act):
     return tdee
 
 
+# based on t-dee, it calculates breakfast
 def bfcalc(tdee):
     breakfast = protein[randint(0, len(protein) - 1)] + ", "
     breakfast += fruit[randint(0, len(fruit) - 1)]
@@ -46,6 +50,7 @@ def bfcalc(tdee):
     return breakfast
 
 
+# snack 1 calculator
 def s1calc(tdee):
     snack1 = ""
     if tdee >= 1800:
@@ -54,6 +59,7 @@ def s1calc(tdee):
     return snack1
 
 
+# lunch
 def lcalc(tdee):
     lunch = ""
     lunch += protein[randint(0, len(protein) - 1)] + ", "
@@ -71,12 +77,14 @@ def lcalc(tdee):
     return lunch
 
 
+# snack 2
 def s2calc(tdee):
     snack2 = protein_snack[randint(0, len(protein_snack) - 1)] + ", "
     snack2 += vegetable[randint(0, len(vegetable) - 1)]
     return snack2
 
 
+# dinner
 def dcalc(tdee):
     dinner = ""
     dinner += protein[randint(0, len(protein) - 1)] + ", "
@@ -94,9 +102,11 @@ def dcalc(tdee):
     return dinner
 
 
+# snack 3
 def s3calc(tdee):
     snack3 = fruit[randint(0, len(fruit) - 1)]
     return snack3
+
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -116,27 +126,40 @@ def home():
             gender = request.form['gender']
             phys_act = request.form['physical_activity']
 
-            tdee = algo.calc_tdee(name, weight, height, age, gender, phys_act)
-            return redirect(url_for('result', tdee=tdee))
+            return redirect(url_for('result',
+                                    name=name,
+                                    weight=weight,
+                                    height=height,
+                                    age=age,
+                                    gender=gender,
+                                    phys_act=phys_act))
 
     return render_template('home.html', title="Diet App", form=form)
 
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():
-    tdee = request.args.get('tdee')
+    name = request.args.get('name')
+    weight = float(request.args.get('weight'))
+    height = float(request.args.get('height'))
+    age = int(request.args.get('age'))
+    gender = request.args.get('gender')
+    phys_act = request.args.get('phys_act')
+
+    weight_loss_diet = Weight_Loss(weight, height, age, 1)
+    tdee = calc_tdee(name, weight, height, age, gender, phys_act)
     if tdee is None:
         return render_template('error.html', title="Error Page")
 
     tdee = float(tdee)
-    breakfast = algo.bfcalc(tdee)
-    snack1 = algo.s1calc(tdee)
-    lunch = algo.lcalc(tdee)
-    snack2 = algo.s2calc(tdee)
-    dinner = algo.dcalc(tdee)
-    snack3 = algo.s3calc(tdee)
+    breakfast = bfcalc(tdee)
+    snack1 = s1calc(tdee)
+    lunch = lcalc(tdee)
+    snack2 = s2calc(tdee)
+    dinner = dcalc(tdee)
+    snack3 = s3calc(tdee)
     return render_template('result.html', title="Result", breakfast=breakfast, snack1=snack1, lunch=lunch,
-                           snack2=snack2, dinner=dinner, snack3=snack3)
+                           snack2=snack2, dinner=dinner, snack3=snack3, weight_loss_diet=weight_loss_diet)
 
 
 if __name__ == '__main__':

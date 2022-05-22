@@ -118,7 +118,7 @@ def Weight_Loss(weight, height, age, vnv):
     inp = []
 
     ## Reading of the Dataet
-    datafin = pd.read_csv('/Users/aman_sorout/Downloads/Deployed-Diet-Recommendation/base/nutrition_distriution.csv')
+    datafin = pd.read_csv('nutrition_distriution.csv')
 
     ## train set
     dataTog = datafin.T
