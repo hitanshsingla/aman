@@ -19,9 +19,6 @@ def Weight_Loss(weight, height, age, vnv):
 
     Food_itemsdata = data['Food_items']
 
-    def Weight_Loss(clbmi, agecl):
-    show_entry_fields()
-
     breakfastfoodseparated = []
     Lunchfoodseparated = []
     Dinnerfoodseparated = []
