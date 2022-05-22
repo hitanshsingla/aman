@@ -53,7 +53,7 @@ def models(x_train, y_train):
     tree.score(x_train, y_train)
     forest.score(x_train, y_train)
     return log, knn, svc_lin, svc_rbf, gauss, tree, forest
-
+# Decision tree has over-fitting.
 
 model = models(x_train, y_train)
 
