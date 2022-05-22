@@ -19,6 +19,9 @@ def Weight_Loss(weight, height, age, vnv):
 
     Food_itemsdata = data['Food_items']
 
+    def Weight_Loss(clbmi, agecl):
+    show_entry_fields()
+
     breakfastfoodseparated = []
     Lunchfoodseparated = []
     Dinnerfoodseparated = []
@@ -67,10 +70,10 @@ def Weight_Loss(weight, height, age, vnv):
     DinnerfoodseparatedIDdata = DinnerfoodseparatedIDdata.T
 
     # calculating BMI
-    age = int(age)
-    veg = float(vnv)
-    weight = float(weight)
-    height = float(height)
+    age = int(a)
+    veg = float(v)
+    weight = float(w)
+    height = float(h)
     bmi = weight / ((height / 100) ** 2)
     agewiseinp = 0
 
@@ -78,7 +81,7 @@ def Weight_Loss(weight, height, age, vnv):
     DinnerfoodseparatedIDdata = DinnerfoodseparatedIDdata.to_numpy()
     LunchfoodseparatedIDdata = LunchfoodseparatedIDdata.to_numpy()
     breakfastfoodseparatedIDdata = breakfastfoodseparatedIDdata.to_numpy()
-    ti = (bmi + agecl) / 2
+    ti = (clbmi + agecl) / 2
 
     ## K-Means Based  Dinner Food
     Datacalorie = DinnerfoodseparatedIDdata[1:,
@@ -185,7 +188,7 @@ def Weight_Loss(weight, height, age, vnv):
     for jj in range(len(weightlosscat)):
         valloc = list(weightlosscat[jj])
         valloc.append(agecl)
-        valloc.append(bmi)
+        valloc.append(clbmi)
         X_test[jj] = np.array(valloc) * ti
 
     X_train = weightlossfin  # Features

@@ -1,11 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+from fileinput import filename
 from random import randint
 from forms import UserInfoForm
 from flask import Flask, render_template, request, url_for, redirect
 from algo_custom import Weight_Loss, Weight_Gain
+import os
 
+file_name = 'mini_db.csv'
+if os.path.exists(file_name):
+    f = open(file_name, 'a')
+else:
+    f = open(file_name, 'w')
+    f.write('name,weight,height,age,gender,pa')
+    f.flush()
 
 protein = ['Yogurt(1 cup)', 'Cooked meat(85g)', 'Cooked fish(100g)', '1 whole egg + 4 egg whites', 'Tofu(125g)']
 fruit = ['Berries(80g)', 'Apple', 'Orange', 'Banana', 'Dried Fruit(Handfull)', 'Fruit Juice(125ml)']
@@ -146,6 +155,9 @@ def result():
     gender = request.args.get('gender')
     phys_act = request.args.get('phys_act')
 
+    f.write(f"\n{name},{weight},{age},{gender},{phys_act}")
+    f.flush()
+
     weight_loss_diet = Weight_Loss(weight, height, age, 1)
     weight_gain_diet = Weight_Gain(weight, height, age, 1)
 
@@ -160,7 +172,7 @@ def result():
     snack2 = s2calc(tdee)
     dinner = dcalc(tdee)
     snack3 = s3calc(tdee)
-    return render_template('result.html', title="Result", breakfast=breakfast, snack1=snack1, lunch=lunch,
+    return render_template('result.html', title="Result", name=name, breakfast=breakfast, snack1=snack1, lunch=lunch,
                            snack2=snack2, dinner=dinner, snack3=snack3, weight_loss_diet=weight_loss_diet,
                            weight_gain_diet=weight_gain_diet)
 
