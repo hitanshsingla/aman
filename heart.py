@@ -64,7 +64,8 @@ def heart():
     thal = int(input('1 = normal; 2 = fixed defect; 3 = reversable defect: '))
     query = pd.DataFrame({'age':[Age],'sex':[sex],'cp': [cp],'trestbps':[trestbps],'chol':[chol],'fbs':[fbs],'restecg':[restecg],'thalach':[thalach],'exang':[exang],'oldpeak':[oldpeak],'slope':[slope],'ca':[ca],'thal':[thal]})
     prediction = model[6].predict(query)
-    print(prediction)
+    # print(prediction)
+    print("With accuracy of 83.6% ")
     if prediction[0] == 0:
         print('You do not have a Heart Disease')
     else:

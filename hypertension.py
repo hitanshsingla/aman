@@ -8,16 +8,21 @@ df['ever_married'] = df['ever_married'].replace({'No':'0','Yes':'1'})
 df['work_type'] = df['work_type'].replace({'Private':'0','Self-employed':'1','Govt_job':'2','children':'3','Never_worked':'4'})
 df['Residence_type'] = df['Residence_type'].replace({'Urban':'0','Rural':'1'})
 df['smoking_status'] = df['smoking_status'].replace({'formerly smoked':'0','never smoked':'1','smokes':'2','Unknown':'3'})
+
 df.isnull().sum()
+
 del df['bmi']
 del df['id']
+
 datatrue = len(df.loc[df['stroke'] == True])
 datafalse = len(df.loc[df['stroke'] == False])
 features = ['gender','age','stroke','heart_disease','ever_married','work_type','Residence_type','avg_glucose_level','smoking_status']
 predicted = ['hypertension']
+
 x = df[features].values
 y = df[predicted].values
 x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.30)
+
 fill = SimpleImputer(missing_values=0,strategy="mean")
 x_train = fill.fit_transform(x_train)
 x_test = fill.fit_transform(x_test)
@@ -77,7 +82,8 @@ def hypertension():
     smoking_status = int(input('smoking status(formerly somked=0, never smoked=1, smoker=2,unknown=3): '))
     query = pd.DataFrame({'gender':[gender],'age':[Age],'stroke':[stroke],'heart_disease':[heart_disease],'ever_married':[ever_married],'work_type':[work_type],'Residence_type':[Residence_type],'avg_glucose_level':[avg_glucose_level],'smoking_status':[smoking_status]})
     prediction = model[6].predict(query)
-    print(prediction)
+    # print(prediction)
+    print("With accuracy of 89.5 % ")
     if prediction[0] == 0:
         print('You do not have hypertension')
     else:

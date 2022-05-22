@@ -66,7 +66,8 @@ def obesity():
     weight = int(input('Weight in kg: '))
     query = pd.DataFrame({'Gender':[gender],'Height':[height],'Weight':[weight]})
     prediction = model[6].predict(query)
-    print(prediction)
+    # print(prediction)
+    print("With accuracy of 85.3% ")
     if prediction[0] == 0:
         print('You are extremely weak')
     elif prediction[0] == 1:
