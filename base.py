@@ -134,6 +134,7 @@ def home():
             age = int(request.form['age'])
             gender = request.form['gender']
             phys_act = request.form['physical_activity']
+            vnv = request.form['food_pref']
 
             return redirect(url_for('result',
                                     name=name,
@@ -141,7 +142,8 @@ def home():
                                     height=height,
                                     age=age,
                                     gender=gender,
-                                    phys_act=phys_act))
+                                    phys_act=phys_act,
+                                    vnv=vnv))
 
     return render_template('home.html', title="Diet App", form=form)
 
@@ -154,12 +156,13 @@ def result():
     age = int(request.args.get('age'))
     gender = request.args.get('gender')
     phys_act = request.args.get('phys_act')
+    vnv = request.args.get('vnv')
 
     f.write(f"\n{name},{weight},{age},{gender},{phys_act}")
     f.flush()
 
-    weight_loss_diet = Weight_Loss(weight, height, age, 1)
-    weight_gain_diet = Weight_Gain(weight, height, age, 1)
+    weight_loss_diet = Weight_Loss(weight, height, age, vnv)
+    weight_gain_diet = Weight_Gain(weight, height, age, vnv)
 
     tdee = calc_tdee(name, weight, height, age, gender, phys_act)
     if tdee is None:

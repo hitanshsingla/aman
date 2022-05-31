@@ -6,8 +6,14 @@ from sklearn.ensemble import RandomForestClassifier
 
 def Weight_Loss(weight, height, age, vnv):
     agecl = age
-
-    data = pd.read_csv('food.csv')
+    # '1': non-veg
+    # '0': veg
+    vnv = str(vnv)
+    if vnv == '0':
+        # user is veg, filter out the non-veg data
+        data = pd.read_csv('veg_food.csv')
+    else:
+        data = pd.read_csv('food.csv')
 
     Breakfastdata = data['Breakfast']
     BreakfastdataNumpy = Breakfastdata.to_numpy()
@@ -28,17 +34,20 @@ def Weight_Loss(weight, height, age, vnv):
     DinnerfoodseparatedID = []
 
     for i in range(len(Breakfastdata)):
-        if BreakfastdataNumpy[i] == 1:
-            breakfastfoodseparated.append(Food_itemsdata[i])
-            breakfastfoodseparatedID.append(i)
+        try:
+            if BreakfastdataNumpy[i] == 1:
+                breakfastfoodseparated.append(Food_itemsdata[i])
+                breakfastfoodseparatedID.append(i)
 
-        if LunchdataNumpy[i] == 1:
-            Lunchfoodseparated.append(Food_itemsdata[i])
-            LunchfoodseparatedID.append(i)
+            if LunchdataNumpy[i] == 1:
+                Lunchfoodseparated.append(Food_itemsdata[i])
+                LunchfoodseparatedID.append(i)
 
-        if DinnerdataNumpy[i] == 1:
-            Dinnerfoodseparated.append(Food_itemsdata[i])
-            DinnerfoodseparatedID.append(i)
+            if DinnerdataNumpy[i] == 1:
+                Dinnerfoodseparated.append(Food_itemsdata[i])
+                DinnerfoodseparatedID.append(i)
+        except KeyError:
+            pass
 
     # retrieving Lunch data rows by loc method |
     LunchfoodseparatedIDdata = data.iloc[LunchfoodseparatedID]
@@ -156,26 +165,35 @@ def Weight_Loss(weight, height, age, vnv):
 
     for zz in range(5):
         for jj in range(len(weightlosscat)):
-            valloc = list(weightlosscat[jj])
-            valloc.append(bmicls[zz])
-            valloc.append(agecls[zz])
-            weightlossfin[t] = np.array(valloc)
-            yt.append(brklbl[jj])
-            t += 1
+            try:
+                valloc = list(weightlosscat[jj])
+                valloc.append(bmicls[zz])
+                valloc.append(agecls[zz])
+                weightlossfin[t] = np.array(valloc)
+                yt.append(brklbl[jj])
+                t += 1
+            except KeyError:
+                pass
         for jj in range(len(weightgaincat)):
-            valloc = list(weightgaincat[jj])
-            valloc.append(bmicls[zz])
-            valloc.append(agecls[zz])
-            weightgainfin[r] = np.array(valloc)
-            yr.append(lnchlbl[jj])
-            r += 1
+            try:
+                valloc = list(weightgaincat[jj])
+                valloc.append(bmicls[zz])
+                valloc.append(agecls[zz])
+                weightgainfin[r] = np.array(valloc)
+                yr.append(lnchlbl[jj])
+                r += 1
+            except KeyError:
+                pass
         for jj in range(len(healthycat)):
-            valloc = list(healthycat[jj])
-            valloc.append(bmicls[zz])
-            valloc.append(agecls[zz])
-            healthycatfin[s] = np.array(valloc)
-            ys.append(dnrlbl[jj])
-            s += 1
+            try:
+                valloc = list(healthycat[jj])
+                valloc.append(bmicls[zz])
+                valloc.append(agecls[zz])
+                healthycatfin[s] = np.array(valloc)
+                ys.append(dnrlbl[jj])
+                s += 1
+            except KeyError:
+                pass
 
     X_test = np.zeros((len(weightlosscat), 6), dtype=np.float32)
 
@@ -223,7 +241,7 @@ def Weight_Loss(weight, height, age, vnv):
 
     print('SUGGESTED FOOD ITEMS ::')
     for ii in range(len(y_pred)):
-        if y_pred[ii] == 2:  # weightloss
+        if y_pred[ii] == 1:  # weightloss
             diet_list_weightloss.append(Food_itemsdata[ii])
             findata = Food_itemsdata[ii]
             if int(veg) == 1:

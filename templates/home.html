@@ -70,13 +70,21 @@
 						{%else%}
 							{{form.age(class="form-control form-control-md")}}
 						{%endif%}
-					</div>	
+					</div>
 					{% for subfield in form.gender %}
 						<div class="form-check">
 							{{ subfield(class="form-check-input") }}
 							{{ subfield.label(class="form-check-label") }}
 						</div>	
-					{% endfor %}					
+					{% endfor %}
+
+					<h4 style="margin-bottom:3px">Food Preference</h4>
+					{% for subfield in form.food_pref %}
+					<div class="form-check">
+						{{ subfield(class="form-check-input") }}
+						{{ subfield.label(class="form-check-label") }}
+					</div>
+					{% endfor %}
 					
 					<h4 style="margin-bottom:3px">Physical Activity</h4>
 					{% for subfield in form.physical_activity %}

@@ -9,7 +9,9 @@ class UserInfoForm(FlaskForm):
     weight = IntegerField('Weight:', validators=[DataRequired(message="No valid value")])
     height = FloatField('Height:', validators=[DataRequired(message="No valid value")])
     age = IntegerField('Age:', validators=[DataRequired(message="No valid value")])
-    gender = RadioField('Gender', choices=[('Male', 'Male'), ('Female', 'Female')], default='Male',
+    gender = RadioField('Gender:', choices=[('Male', 'Male'), ('Female', 'Female')], default='Male',
+                        validators=[DataRequired()])
+    food_pref = RadioField('Food Preference', choices=[('0', 'Vegetarian'), ('1', 'Non Vegetarian')], default='1',
                         validators=[DataRequired()])
     physical_activity = RadioField('Physical Activity',
                                    choices=[
